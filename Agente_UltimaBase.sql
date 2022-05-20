@@ -1,0 +1,15 @@
+SELECT
+
+NOME_AGENTE
+,max(data_hora_inicio_atendimento) as ULTIMA_BASE
+
+,CASE WHEN Left(max(ULTIMA_BASE), 10) = 'Claro_Bom2' THEN 'Bom_Novo'
+	WHEN Left(max(MAILING), 10) = 'Claro_Cor_' THEN 'Claro_Coringa'
+	WHEN Left(max(MAILING), 10) = 'Claro_TLV2' THEN 'Migração_Novo'
+	WHEN Left(max(MAILING), 10) = 'Claro_Q12_' THEN 'Q1_Novo'
+	ELSE '#N/D' END AS CAMPANHA
+
+	
+FROM [SVSPODB01].[DBM_BASE].[dbo].[TB_HISTORICO_HMB_CLARO_MIGRACAO]
+WHERE DATA_HORA_INICIO_ATENDIMENTO BETWEEN '2020-20-07 09:00:00' and '2020-20-07 23:00' AND COD_CAMPANHA IN (1, 5)
+GROUP BY NOME_AGENTE
